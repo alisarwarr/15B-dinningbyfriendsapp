@@ -1,0 +1,23 @@
+var option = [ 'meal', 'drink' ];
+var option_type = [ 'big', 'medium', 'small', 'big', 'medium' ];
+
+
+
+for(var i in option) {
+    for(var j in option_type) {
+        console.log(option[i], option_type[j]);
+    }
+}
+
+
+
+//mealbig
+//mealmedium
+//mealsmall
+//mealbig
+//mealmedium
+//drinkbig
+//drinkmedium
+//drinksmall
+//drinkbig
+//drinkmedium

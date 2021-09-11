@@ -1,0 +1,191 @@
+type Event {
+   result: String
+}
+
+
+#User
+type userType {
+   id: ID!
+   name: String!
+}
+
+
+#Restaurant
+type restaurantType {
+   id: ID!
+   name: String!
+   cuisine: String!
+   address: String!
+}
+
+
+#Restaurantuserreview
+type restaurantuserreviewType {
+   r_id: ID!
+   r_restaurantId_ExistInRestaurantsTable: ID!         #restaurant id
+   r_userId_ExistInUsersTable: ID!                     #reviewer id
+   r_userName_ExistInUsersTable: String!               #reviewer name
+   r_text: String!
+}
+
+
+#Restaurantuserreviewpersonalization
+type restaurantuserreviewpersonalizationType {
+   p_id: ID!
+   p_reviewId_ExistInReviewsTable: ID!                 #review id
+   p_userId_ExistInUsersTable: ID!                     #personalizationer id
+   p_userName_ExistInUsersTable: String!               #personalizationer name
+   p_useful: Boolean!
+}
+
+
+#Restaurantuserreview_Restaurantuserreviewpersonalization ( special case )
+type restaurantuserreview_restaurantuserreviewpersonalization_Type {
+   r_id: ID!
+   r_restaurantId_ExistInRestaurantsTable: ID!         #restaurant id
+   r_userId_ExistInUsersTable: ID!                     #reviewer id
+   r_userName_ExistInUsersTable: String!               #reviewer name
+   r_text: String!
+#LEFT JOIN
+   p_id: ID                               #(nullable)
+   p_reviewId_ExistInReviewsTable: ID     #(nullable)  #review id
+   p_userId_ExistInUsersTable: ID         #(nullable)  #personalizationer id
+   p_userName_ExistInUsersTable: String   #(nullable)  #personalizationer name
+   p_useful: Boolean                      #(nullable)
+}
+
+
+type Query {
+   #User
+   allUsers: [userType!]
+   getUserByName(name: String!): userType
+
+
+   #Restaurant
+   allRestaurants: [restaurantType!]
+   getRestaurantByName(name: String!): restaurantType
+
+
+   #Userfriend
+   allUserfriends(id: ID!): [userType!]
+   getUserfriendById(idFrom: ID!, idTo: ID!): userType
+
+
+   #Userrestaurant
+   allUserrestaurants(id: ID!): [restaurantType!]
+   getUserrestaurantById(idFrom: ID!, idTo: ID!): restaurantType
+
+
+   #RestaurantUser
+   allRestaurantusers(id: ID!): [userType!]
+   getRestaurantuserById(idFrom: ID!, idTo: ID!): userType
+
+
+   #Restaurantuserreview
+   allRestaurantuserreviews(id: ID!): [restaurantuserreviewType!]
+   getRestaurantuserreviewByUserId(idFrom: ID!, idTo: ID!): restaurantuserreviewType
+
+
+   #Restaurantuserreviewpersonalization
+   allRestaurantuserreviewpersonalizations(id: ID!, hisId: ID!): [restaurantuserreviewpersonalizationType!]
+   getRestaurantuserreviewpersonalizationByUserId(idFrom: ID!, idTo: ID!, hisId: ID!): restaurantuserreviewpersonalizationType
+
+
+   #Restaurantuserreview_Restaurantuserreviewpersonalization ( special case )
+   all_Restaurantuserreviews_Restaurantuserreviewpersonalizations_InOneRestaurant_ByUserId(id: ID!, hisId: ID!): [restaurantuserreview_restaurantuserreviewpersonalization_Type!]
+   all_Restaurantuserreviews_Restaurantuserreviewpersonalizations_InAllRestaurants_ByUserId(id: ID!, hisId: ID!): [restaurantuserreview_restaurantuserreviewpersonalization_Type!]
+}
+
+
+type Mutation {
+   #User
+   createUser(name: String!): Event
+   deleteUser(id: ID!, name: String!): Event
+
+
+   #Restaurant
+   createRestaurant(name: String!, cuisine: String!, address: String!): Event
+   deleteRestaurant(id: ID!): Event
+
+
+   #Userfriend
+   createUserfriend(idFrom: ID!, idTo: ID!): Event
+   deleteUserfriend(idFrom: ID!, idTo: ID!): Event
+
+
+   #Userrestaurant
+   createUserrestaurant(idFrom: ID!, idTo: ID!): Event
+   deleteUserrestaurant(idFrom: ID!, idTo: ID!): Event
+
+
+   #Restaurantuser
+   createRestaurantuser(idFrom: ID!, idTo: ID!): Event
+   deleteRestaurantuser(idFrom: ID!, idTo: ID!): Event
+
+
+   #Restaurantuserreview
+   createRestaurantuserreview(idFrom: ID!, idTo: ID!, hisName: String!, text: String!): Event
+   deleteRestaurantuserreview(idFrom: ID!, idTo: ID!): Event
+   editRestaurantuserreview(idFrom: ID!, idTo: ID!, text: String!): Event
+
+
+   #Restaurantuserreviewpersonalization
+   createRestaurantuserreviewpersonalization(idFrom: ID!, idTo: ID!, hisId: ID!, hisName: String!, useful: Boolean!): Event
+   deleteRestaurantuserreviewpersonalization(idFrom: ID!, idTo: ID!, hisId: ID!): Event
+   editRestaurantuserreviewpersonalization(idFrom: ID!, idTo: ID!, hisId: ID!, useful: Boolean!): Event
+}
+
+
+type Subscription {
+   #User
+   onCreateUser: Event
+      @aws_subscribe(mutations: ["createUser"])
+   onDeleteUser: Event
+      @aws_subscribe(mutations: ["deleteUser"])
+
+
+   #Restaurant
+   onCreateRestaurant: Event
+      @aws_subscribe(mutations: ["createRestaurant"])
+   onDeleteRestaurant: Event
+      @aws_subscribe(mutations: ["deleteRestaurant"])
+
+
+   #Userfriend
+   onCreateUserfriend: Event
+      @aws_subscribe(mutations: ["createUserfriend"])
+   onDeleteUserfriend: Event
+      @aws_subscribe(mutations: ["deleteUserfriend"])
+
+
+   #Userrestaurant
+   onCreateUserrestaurant: Event
+      @aws_subscribe(mutations: ["createUserrestaurant"])
+   onDeleteUserrestaurant: Event
+      @aws_subscribe(mutations: ["deleteUserrestaurant"])
+
+
+   #Restaurantuser
+   onCreateRestaurantuser: Event
+      @aws_subscribe(mutations: ["createRestaurantuser"])
+   onDeleteRestaurantuser: Event
+      @aws_subscribe(mutations: ["deleteRestaurantuser"])
+
+
+   #Restaurantuserreview
+   onCreateRestaurantuserreview: Event
+      @aws_subscribe(mutations: ["createRestaurantuserreview"])
+   onDeleteRestaurantuserreview: Event
+      @aws_subscribe(mutations: ["deleteRestaurantuserreview"])
+   onEditRestaurantuserreview: Event
+      @aws_subscribe(mutations: ["editRestaurantuserreview"])
+
+
+   #Restaurantuserreviewpersonalization
+   onCreateRestaurantuserreviewpersonalization: Event
+      @aws_subscribe(mutations: ["createRestaurantuserreviewpersonalization"])
+   onDeleteRestaurantuserreviewpersonalization: Event
+      @aws_subscribe(mutations: ["deleteRestaurantuserreviewpersonalization"])
+   onEditRestaurantuserreviewpersonalization: Event
+      @aws_subscribe(mutations: ["editRestaurantuserreviewpersonalization"])
+}

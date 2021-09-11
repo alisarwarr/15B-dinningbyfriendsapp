@@ -1,0 +1,117 @@
+var arr1 = [
+  {id: "1", name: "ALI"   , age: 22},
+  {id: "2", name: "FAIZ"  , age: 20},
+  {id: "3", name: "SALMAN", age: 17},
+  {id: "4", name: "AYESHA", age: 13},
+  {id: "5", name: "AAMNA" , age: 4 }
+];
+
+var arr2 = [
+  {id: "1", name: "ALI"   , age: 22, game: "cricket" },
+  {id: "2", name: "FAIZ"  , age: 20, game: "football"},
+  {id: "3", name: "SALMAN", age: 17, game: "hockey"  }
+];
+
+
+
+
+//*************************************************************************************
+const result = arr2.filter(({ age} ) => age === 22 )
+console.log(result);
+/***********************************************/
+//[ {id: "1", name: "ALI", age: 22, game: "cricket" } ]
+/***********************************************/
+//*************************************************************************************
+
+
+
+
+//*************************************************************************************
+const result = arr2.filter(({ age} ) => age === 22 )[0]
+console.log(result);
+/*******************************************/
+//{id: "1", name: "ALI", age: 22, game: "cricket" }
+/*******************************************/
+//*************************************************************************************
+
+
+
+
+//*************************************************************************************
+let modifiedData = [];
+for(var obj of arr1) {
+  const result = arr2.filter(({ age } ) => age === obj.age )[0];
+
+  if(result !== undefined) {
+    modifiedData.push(result);
+  }
+}
+console.log(modifiedData);
+/*********************************************/
+//[
+//  {id: "1", name: "ALI"   , age: 22, game: "cricket" },
+//  {id: "2", name: "FAIZ"  , age: 20, game: "football"},
+//  {id: "3", name: "SALMAN", age: 17, game: "hockey"  }
+//]
+/*********************************************/
+//*************************************************************************************
+
+
+
+
+//*************************************************************************************
+let modifiedData = [];
+for(var obj of arr1) {
+  const result = arr2.filter(({ age } ) => age === obj.age)[0];
+
+  if(result !== undefined) {
+    modifiedData.push(result);
+    //remove that particular index from first array
+    arr1 = arr1.filter(({ age }) => age !== obj.age)
+  }
+}
+
+//pushing the updated first array to data 
+modifiedData = [ ...modifiedData, ...arr1 ];
+console.log(modifiedData);
+/*********************************************/
+//[
+//  {id: "4", name: "AYESHA", age: 13},
+//  {id: "5", name: "AAMNA" , age: 4 },
+//  {id: "1", name: "ALI"   , age: 22, game: "cricket" },
+//  {id: "2", name: "FAIZ"  , age: 20, game: "football"},
+//  {id: "3", name: "SALMAN", age: 17, game: "hockey"  }
+//]
+/*********************************************/
+//*************************************************************************************
+
+
+
+
+//*************************************************************************************
+let modifiedData = [];
+for(var obj of arr1) {
+  const result = arr2.filter(({ age } ) => age === obj.age)[0];
+
+  if(result !== undefined) {
+    modifiedData.push(result);
+    //remove that particular index from first array
+    arr1 = arr1.filter(({ age }) => age !== obj.age)
+  }
+}
+
+//pushing the updated first array to data 
+modifiedData = [ ...modifiedData, ...arr1 ];
+//sorting that data with 'id' accordingly
+modifiedData.sort((a, b) => a.id - b.id);
+console.log(modifiedData);
+/*********************************************/
+//[
+//  {id: "1", name: "ALI"   , age: 22, game: "cricket" },
+//  {id: "2", name: "FAIZ"  , age: 20, game: "football"},
+//  {id: "3", name: "SALMAN", age: 17, game: "hockey"  },
+//  {id: "4", name: "AYESHA", age: 13},
+//  {id: "5", name: "AAMNA" , age: 4 }
+//]
+/*********************************************/
+//*************************************************************************************
